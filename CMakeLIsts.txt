@@ -1,0 +1,3 @@
+project("data_struct")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -fexec-charset=GBK")
+add_executable(question main.c question1.c)
