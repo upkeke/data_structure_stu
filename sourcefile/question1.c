@@ -1,6 +1,10 @@
-#include "question1.h"
+#include "..\headfile\question1.h"
 #include <stdio.h>
 #include <stdlib.h>
+
+//合并指数相同的多项式 针对重复输入相同的指数的情况
+// static void remove_similar_poly(PolyLode *head);
+
 //初始化链表
 PolyLode *poly_list_init()
 {
@@ -81,13 +85,13 @@ void sort_list(PolyLode *head)
     }
 }
 //合并指数相同的多项式
-static void remove_similar_poly(PolyLode *head)
+void remove_similar_poly(PolyLode *head)
 {
     if (poly_list_size(head) < 2)
         return;
     sort_list(head);
     PolyLode *p1 = head->next;
-    while (p1 != NULL)
+    while (p1->next != NULL)
     {
         if (p1->expo == p1->next->expo)
         {
@@ -96,23 +100,26 @@ static void remove_similar_poly(PolyLode *head)
             p1->next = p1->next->next;
             free(temp);
         }
-        p1 = p1->next;
+        else
+        {
+            p1 = p1->next;
+        }
     }
-    printf("list_size = %d\n", poly_list_size(head));
+    // printf("list_size = %d\n", poly_list_size(head));
 }
 // 2个多项式相加
 PolyLode *add_poly_list(PolyLode *p1, PolyLode *p2)
 {
     PolyLode *result = malloc(sizeof(PolyLode));
-    result->next =NULL;
+    result->next = NULL;
     PolyLode *h = result; //替身攻击
     PolyLode *temp;
     for (int i = 0; i < 2; i++)
     {
         if (i)
-            temp = p1->next;
-        else
             temp = p2->next;
+        else
+            temp = p1->next;
         while (temp != NULL)
         {
             h->next = malloc(sizeof(PolyLode));
@@ -136,11 +143,15 @@ PolyLode *sub_poly_list(PolyLode *p1, PolyLode *p2)
     for (int i = 0; i < 2; i++)
     {
         if (i)
-            temp = p1->next;
-        else
         {
             temp = p2->next;
             flag = -1;
+        }
+
+        else
+        {
+            temp = p1->next;
+            flag = 1;
         }
         while (temp != NULL)
         {
@@ -192,7 +203,7 @@ void free_list(PolyLode *head)
     free(head);
     while (temp != NULL)
     {
-        head=temp->next;
+        head = temp->next;
         free(temp);
         temp = head;
     }

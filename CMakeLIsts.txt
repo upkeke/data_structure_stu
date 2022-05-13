@@ -1,3 +1,8 @@
-project("data_struct")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -fexec-charset=GBK")
-add_executable(question main.c question1.c)
+#https://blog.csdn.net/afei__/article/details/81201039
+project("data_struct") #项目名
+set(CMAKE_C_STANDARD 11) # 使用C11标准
+set(CMAKE_BUILD_TYPE Debug) #debug 模式
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -fexec-charset=GBK") #编码格式GBK
+
+aux_source_directory(sourcefile  src_list) # 包含文件夹下面所有的源文件 
+add_executable(question ${src_list})  
