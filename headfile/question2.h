@@ -13,8 +13,6 @@ typedef struct
     int rear;
 } LoopSqueue;
 
-
-
 LoopSqueue* init_squeue();
 //判断是否为满
 int is_full(LoopSqueue* sq);

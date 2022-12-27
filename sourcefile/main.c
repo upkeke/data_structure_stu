@@ -2,9 +2,11 @@
 #include "..\headfile\question2.h"
 #include "..\headfile\question3.h"
 #include "..\headfile\question4.h"
+#include "..\headfile\question5.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
 void question1()
 {
     printf("第一个多项式\n");
@@ -266,30 +268,29 @@ void k11()
         {0, 1, 0, 1, 1, 0, 0},
         {0, 0, 0, 0, 1, 0, 0},
     };
-    int length =7;
-    int **target=malloc(sizeof(int*)*length);
+    int length = 7;
+    int **target = malloc(sizeof(int *) * length);
     for (int i = 0; i < length; i++)
     {
-        target[i]=malloc(sizeof(int)*length);
-        memset(target[i],0,sizeof(int)*length);//数组默认全部设置为0
+        target[i] = malloc(sizeof(int) * length);
+        memset(target[i], 0, sizeof(int) * length); //数组默认全部设置为0
     }
 
     for (int i = 0; i < length; i++)
     {
-        memcpy(target[i],x[i],sizeof(int)*(length));
+        memcpy(target[i], x[i], sizeof(int) * (length));
     }
 
     for (int i = 0; i < length; i++)
     {
         for (int j = 0; j < length; j++)
         {
-            printf("%d\t",target[i][j]);
+            printf("%d\t", target[i][j]);
         }
         printf("\n");
     }
-    
 }
-void k12()
+void question4_1()
 {
     int x[7][7] = {
         {0, 1, 0, 0, 1, 0, 0},
@@ -300,25 +301,137 @@ void k12()
         {0, 0, 0, 1, 1, 0, 0},
         {0, 0, 0, 0, 1, 0, 0},
     };
-    int length =7;
-    char c[7]={'A'};
+    int length = 7;
+    char c[7] = {'A'};
     for (int i = 1; i < length; i++)
-        c[i]=c[i-1]+1;
-    graph_matrix* target =ctor_gra_matr(length);
-    build_gra_matr(target,c,x);
-    //int visit[7]={0};
+        c[i] = c[i - 1] + 1;
+    graph_matrix *target = ctor_gra_matr(length);
+    build_gra_matr(target, c, x);
+    // int visit[7]={0};
     printf("矩阵图DFS 深度遍历\t");
-    dfs_gra_matr(target,2);
+    dfs_gra_matr(target, 2);
     printf("\n");
     printf("矩阵图BFS 广度遍历\t");
-    bfs_gra_matr(target,2);
+    bfs_gra_matr(target, 2);
+    free_gra_matr(target);
 }
-
-
+void question4_2()
+{
+    vertex ver[7] = {0};
+    build_vertex_list(ver, 7);
+    printf("DFS\t");
+    dfs_gra_vertex(ver, 3);
+    printf("\nBFS\t");
+    bfs_gra_vertex(ver, 7, 5);
+    printf("\n");
+    free_gra_vertex(ver, 7);
+}
+void k14()
+{
+    bool x[5] = {true, true, true, true, true};
+    memset(x, 0, sizeof(x));
+    // bool b =true;
+    printf("%d\n", (int)sizeof(x));
+    for (int i = 0; i < 5; i++)
+    {
+        printf("%d", x[i]);
+    }
+}
+//生成随机数
+#include <time.h>
+void k15()
+{
+    int x = 0;
+    //{884,292,622,843,389,676,525,777,948,682,526,995,459,342,659,292,886,513,361,651}
+    srand((unsigned)time(NULL));
+    for (size_t i = 0; i < 20; i++)
+    {
+        x = rand() % 801 + 200; //[1000,200]
+        printf("%d\t", x);
+    }
+}
+void question5_1()
+{
+    printf("创建\n");
+    hashTable has = build_hash();
+    int arr[20] = {
+        884, 292, 622, 843, 389,
+        676, 525, 777, 948, 682,
+        526, 995, 459, 342, 659,
+        293, 886, 513, 361, 651};
+    // {
+    //     A,B,C,D,E,
+    //     F,G,H,I,J,
+    //     K,L,M,N,O,
+    //     P,Q,R,S,T
+    // }
+    char begin = 'A';
+    for (size_t i = 0; i < 20; i++)
+    {
+        push_back_pair(has, arr[i], begin);
+        begin++;
+    }
+    printf("打印键值对\n");
+    print_hash(has);
+    printf("插入键值对\n");
+    push_back_pair(has, 54, 'K');
+    print_hash(has);
+    printf("查找键位948的值时：%c\n", get_value(has, 948));
+    printf("delete键值对\n");
+    delete_pair(has, 513);
+    print_hash(has);
+}
+//回溯
+void recall(int *arr, int index, int step)
+{
+    if (index - step < 0 || arr[index] > arr[index - step])
+        return;
+    int temp = arr[index];
+    arr[index] = arr[index - step];
+    arr[index - step] = temp;
+    index = index - step;
+    recall(arr, index, step);
+}
+//希尔排序
+void shell_sort(int *arr, int size)
+{
+    int step = size / 2;
+    while (step != 0)
+    {
+        int frist = 0;
+        int second = 0;
+        while (second < size)
+        {
+            second = frist + step;
+            if (arr[frist] > arr[second])
+            {
+                recall(arr, second, step);
+            }
+            frist = second;
+        }
+        step = step / 2;
+    }
+}
+//
+void k16()
+{
+    int arr[20] = {
+        884, 292, 622, 843, 389,
+        676, 525, 777, 948, 682,
+        526, 995, 459, 342, 659,
+        293, 886, 513, 361, 651};
+    shell_sort(arr,20);
+    for (size_t i = 0; i < 20; i++)
+    {
+        printf("%d\t",arr[i]);
+    }
+    
+}
 int main()
 {
-    
-    printf("我对付苏联飞机案例");
-    // question3();
+    char *s ="感受到开口了三等奖";
+    printf("%s",s);
+    int x =10;
+    printf("%d",x);
     return 0;
 }

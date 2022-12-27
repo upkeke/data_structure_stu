@@ -10,6 +10,7 @@ graph_matrix *ctor_gra_matr(int length)
     target->length = length;
     //开辟字符数组的空间
     target->c_arr = malloc(sizeof(char) * length);
+    memset(target->c_arr,0,sizeof(char) * length);
     //开辟二维数组的空间
     target->row_col = malloc(sizeof(int *) * length);
     for (int i = 0; i < length; i++)
@@ -136,4 +137,14 @@ void bfs_gra_matr(graph_matrix *top,int vis_index)
     squ = NULL;
     free(hasvisited);
     hasvisited = NULL;
+}
+
+void free_gra_matr(graph_matrix* gra_matr)
+{
+    for (size_t i = 0; i < gra_matr->length; i++)
+    {
+        free(gra_matr->row_col[i]);
+    }
+    free(gra_matr->row_col);
+    free(gra_matr->c_arr);
 }
